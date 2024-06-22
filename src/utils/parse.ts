@@ -15,6 +15,6 @@ export function createParsedMatrix(
   columns: number
 ): ParsedMatrix {
   return Array.from({ length: rows }, () =>
-    Array.from({ length: columns }, () => "1")
+    Array.from({ length: columns }, () => "")
   );
 }
