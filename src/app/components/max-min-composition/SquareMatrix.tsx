@@ -10,12 +10,12 @@ import { useState } from "react";
 import Matrix from "./Matrix";
 
 type Props = {
-  size: number;
+  matrix: ParsedMatrix;
+  setMatrix: (matrix: ParsedMatrix) => void;
 };
 
-export default function SquareMatrix({ size }: Readonly<Props>) {
-  const emptyMatrix = createParsedMatrix(size, size);
-  const [matrix, setMatrix] = useState<ParsedMatrix>(emptyMatrix);
+export default function SquareMatrix({ matrix, setMatrix }: Readonly<Props>) {
+  const emptyMatrix = createParsedMatrix(matrix.length, matrix.length);
   const [composition, setComposition] = useState<ParsedMatrix | null>(null);
 
   const handleCellChange = (

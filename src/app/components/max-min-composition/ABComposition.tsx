@@ -9,25 +9,25 @@ import {
 } from "@/utils";
 import { useState } from "react";
 import Matrix from "./Matrix";
+import MatrixLink from "../MatrixLink";
 
 type Props = {
-  rowsMatrixA: number;
-  columnsMatrixA: number;
-  rowsMatrixB: number;
-  columnsMatrixB: number;
+  matrixA: ParsedMatrix;
+  matrixB: ParsedMatrix;
+  setMatrixA: (matrix: ParsedMatrix) => void;
+  setMatrixB: (matrix: ParsedMatrix) => void;
 };
 
 export default function ABComposition({
-  rowsMatrixA,
-  columnsMatrixA,
-  rowsMatrixB,
-  columnsMatrixB,
+  matrixA,
+  matrixB,
+  setMatrixA,
+  setMatrixB,
 }: Readonly<Props>) {
-  const emptyMatrixA = createParsedMatrix(rowsMatrixA, columnsMatrixA);
-  const emptyMatrixB = createParsedMatrix(rowsMatrixB, columnsMatrixB);
-
-  const [matrixA, setMatrixA] = useState<ParsedMatrix>(emptyMatrixA);
-  const [matrixB, setMatrixB] = useState<ParsedMatrix>(emptyMatrixB);
+  const emptyMatrixA = createParsedMatrix(matrixA.length, matrixA[0].length);
+  const emptyMatrixB = createParsedMatrix(matrixB.length, matrixB[0].length);
+  const matrixADimensions = `(${matrixA.length}x${matrixA[0].length})`;
+  const matrixBDimensions = `(${matrixB.length}x${matrixB[0].length})`;
 
   const [composition, setComposition] = useState<ParsedMatrix | null>(null);
 
@@ -76,11 +76,8 @@ export default function ABComposition({
       parsedMatrixA,
       parsedMatrixB
     );
-    console.log(parsedMatrixA.length);
-    console.log(parsedMatrixB.length);
-    console.log(composition.length);
+
     const parsedComposition = parseMatrix(composition);
-    console.log(parsedComposition.length);
     setComposition(parsedComposition);
   };
 
@@ -89,7 +86,7 @@ export default function ABComposition({
       <div className="flex gap-4  justify-center flex-wrap">
         <div>
           <h2 className="text-center mb-4">
-            Ingrese los valores de la matriz A:
+            Ingrese los valores de la matriz A {matrixADimensions}:
           </h2>
           <Matrix
             parsedMatrix={matrixA}
@@ -100,7 +97,7 @@ export default function ABComposition({
 
         <div>
           <h2 className="text-center mb-4">
-            Ingrese los valores de la matriz B:
+            Ingrese los valores de la matriz B {matrixBDimensions}:
           </h2>
           <Matrix
             parsedMatrix={matrixB}
@@ -124,9 +121,21 @@ export default function ABComposition({
         </button>
       </div>
       {composition && (
-        <div className="flex flex-col items-center flex-wrap">
+        <div className="flex flex-col items-center flex-wrap gap-4">
           <h2>La composición max-min es la siguiente:</h2>
-          <Matrix parsedMatrix={composition} editable={false} />
+          <div>
+            <Matrix parsedMatrix={composition} editable={false} />
+          </div>
+          {composition.length === 7 && composition[0].length === 8 && (
+            <MatrixLink
+              onClick={() => {
+                setMatrixA(composition);
+                setMatrixB(createParsedMatrix(8, 8));
+                setComposition(null);
+              }}
+              label="Componer con matrix 8x8"
+            />
+          )}
         </div>
       )}
     </div>
