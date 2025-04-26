@@ -1,3 +1,4 @@
+import { Input } from "@/components/ui/input";
 import { ParsedMatrix } from "@/utils";
 
 type Props = {
@@ -20,7 +21,7 @@ export default function Matrix({
       {row.map((col, colIndex) => (
         <input
           key={colIndex}
-          type="text"
+          type="number"
           disabled={!editable}
           className={`border border-gray-300 w-14 h-14 text-center focus:outline-none focus:bg-slate-200 hover:bg-slate-200 ${
             !editable && "bg-slate-200"
